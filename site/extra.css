@@ -6,7 +6,7 @@
 
 :root {
     --em-vers: "0.0.1";
-    --em-time: "202406272316";
+    --em-time: "202407011127";
 }
 
 [data-md-color-scheme="slate"] {
@@ -56,15 +56,18 @@ a:not([class]) {
     font-size: 0.8rem;
 }
 
-/*
-div.md-search__inner::after {
-    content: 'version 'var(--em-vers)' \2014  [\2009 'var(--em-time)'\2009]';
-    font-size: 0.6rem;
-    position: absolute;
-    top: 48px;
-    left: 24px;
+div.md-search {
+    position: relative;
+    margin-top: 12px;
 }
-*/
+
+div.md-search__inner::after {
+    content: '[\2009'var(--em-time)'\2009]';
+    font-size: 0.6rem;
+    position: relative;
+    top: -20px;
+    left: 244px;
+}
 
 .md-nav__title[for="__toc"] {
     font-size: 0.8rem;
