@@ -5,8 +5,8 @@
 }
 
 :root {
-    --em-vers: "0.0.1";
-    --em-time: "202407011626";
+    --em-vers: "25.0.1";
+    --em-time: "202408281627";
 }
 
 [data-md-color-scheme="slate"] {
@@ -254,56 +254,66 @@ span.em-screen {
 
 /* syntax highlight */
 
-.language-em .c1 {
+.language-zigem .c1 {
     color: #75ad5b;
     font-style: italic;
 }
 
-.language-em .k {
+.language-zigem .k {
     color: hsl(280, 50%, 65%);
     font-weight: 700;
 }
 
-.language-em .kt {
+.language-zigem .kr {
+    color: #569CD6;
+    font-weight: 700;
+}
+
+.language-zigem .kt {
     color: #4EC9B0;
     font-weight: 700;
 }
 
-.language-em .n {
+.language-zigem .n {
     color: #9cdcfe;
     font-weight: 700;
 }
 
-.language-em .nb {
-    color: hsl(0, 100%, 70%);
+.language-zigem .nb {
+    color: #f99165;
     font-weight: 700;
 }
 
-.language-em .nc {
+.language-zigem .nc {
     color: #4EC9B0;
     font-weight: 700;
 }
 
-.language-em .nf {
+.language-zigem .nf {
     color: #DCDCAA;
     font-weight: 700;
 }
 
-.language-em .nn {
+.language-zigem .nn {
     color: #53acf5;
     font-weight: 700;
 }
 
-.language-em .s {
+.language-zigem .nt {
+    color: #bbffee;
+    font-weight: 700;
+}
+
+.language-zigem .s {
     color: hsl(10, 70%, 60%);
 }
 
-.language-em .sd {
+.language-zigem .sd {
     color: hsl(30, 10%, 40%);
     font-style: italic;
 }
 
-.language-em .se {
+.language-zigem .se {
     color: hsl(24, 89%, 63%);
 }
 

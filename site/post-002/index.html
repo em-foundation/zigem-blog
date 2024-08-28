@@ -1,0 +1,713 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../post-001/">
+      
+      
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+    
+    
+      
+        <title>Announcing Zig•EM v25.0.1 - Blogging Zig&bull;EM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+  
+  
+  
+  
+  <style>:root{--md-annotation-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-12 6 6-6-6-6-1.4 1.4 4.6 4.6-4.6 4.6L10 18Z"/></svg>');}</style>
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Quicksand";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-X2KECJ2QG5"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-X2KECJ2QG5",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-X2KECJ2QG5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  <meta property="og:title" content="Post 002: Announcing Zig&bull;EM v25.0.1"/>
+
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#announcing-zigem-v2501" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Blogging Zig&amp;bull;EM" class="md-header__button md-logo" aria-label="Blogging Zig&bull;EM" data-md-component="logo">
+      
+  <img src="../assets/logo12.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Blogging Zig&bull;EM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Announcing Zig&bull;EM v25.0.1
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Blogging Zig&amp;bull;EM" class="md-nav__button md-logo" aria-label="Blogging Zig&bull;EM" data-md-component="logo">
+      
+  <img src="../assets/logo12.png" alt="logo">
+
+    </a>
+    Blogging Zig&bull;EM
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setting-expectations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting expectations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting started
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exploring-zigem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exploring Zig&bull;EM
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#looking-ahead" class="md-nav__link">
+    <span class="md-ellipsis">
+      Looking ahead
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href=".." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/57962169?v=4" alt="Bob Frankel">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Bob Frankel
+                        
+                      </strong>
+                      <br>
+                      Chief Coding Officer
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
+                        <time datetime="2024-09-01 00:00:00" class="md-ellipsis">September 1, 2024</time>
+                      </div>
+                    </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              5 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+
+
+<h1 id="announcing-zigem-v2501">Announcing Zig&bull;EM v25.0.1</h1>
+<p>With support from <strong>The EM Foundation</strong>, we announce the initial release of <strong>Zig&bull;EM</strong> &ndash; a novel programming framework for developing and deploying applications which target resource-constrained MCUs, where every byte of memory and every &mu;Joule of energy matters.</p>
+<!-- more -->
+
+<div class="em-nav-arrow">
+<p><a href="/post-001" title="The EM language is dead, long live EM !!!">&cularr;</a></p>
+</div>
+<figure id="fig0" style="display:none"></figure>
+<h2 id="setting-expectations">Setting expectations</h2>
+<p>As rationalized in our <a href="/post-001" title="The EM language is dead, long live EM !!!">previous</a> post, <strong>Zig&bull;EM</strong> strives to <em>reconstitute</em>&thinsp; core concepts and constructs of the <a href="https://docs.openem.org/">EM Programming Language</a> into <strong>Zig</strong> &ndash; a system programming language favorably compared with Go and Rust, but with the simplicity and transparency of C. </p>
+<p class="annotate">But downgrading the EM language into a programming framework hosted by Zig does introduce some challenges.&thinsp; For one, the Zig language itself remains a work-in-progress; reaching an "official" Zig 1.0 release will realistically require years of effort.(1)</p>
+<ol>
+<li>see Andrew Kelley's <a href="https://lwn.net/Articles/959915/">Zig 2024 Roadmap</a> talk</li>
+</ol>
+<p>Furthermore, Zig eschews much of the "syntactic flexibility" (operator overloading, optional lexical elements, etc) found in contemporary languages ranging from C++ to Ruby &ndash; leaving us with a somewhat rudimentary set of programmatic mechanisms to realize <strong>Zig&bull;EM</strong>.</p>
+<p>As a stand-alone language, EM could introduce keywords like <code class="language-zigem"><span class="k">config</span></code> and <code class="language-zigem"><span class="k">proxy</span></code> to reinforce its novel concepts; and EM's language translator could impart very specific meanings to otherwise stock programming constructs like <code class="language-zigem"><span class="k">module</span></code> and <code class="language-zigem"><span class="k">interface</span></code>.</p>
+<p>Grafting EM onto Zig, however, requires us to operate within the syntactic and semantic constraints of the latter language; ensuring that EM's concepts and constructs don't become "lost in translation", so to speak, emerges as our greatest challenge.</p>
+<div class="admonition info">
+<p class="admonition-title">FULL DISCLOSURE &ndash; My first impressions of Zig</p>
+<p>Six months ago, I hadn't even <em>heard</em>&thinsp; of Zig&thinsp;!!&nbsp; In the interim, of course, I've not only immersed myself in the language but also managed to field my first iteration of the <strong>Zig&bull;EM</strong> framework.</p>
+<p>To understand my ever-growing fascination with Zig, let's roll the clock back to the 1980s &ndash; a time in which C had firmly established itself as a universal "middle-level" language &ndash; used for system programming on 8-bit microprocessors, 16-bit mini-computers, and 32-bit mainframes alike.</p>
+<p>Like Zig, the C language has no inherent runtime environment supported across all target processors; building upon a "bare-metal" foundation, libraries of C functions (general-purpose or domain-specific) would address the runtime needs of a broad range of applications.</p>
+<p class="annotate">Programmers generally characterize both C and Zig as inherently <em>small</em>&thinsp; languages &ndash; embodying a set of rudimentary mechanisms for constructing higher-level libraries, while staying close to the underlying hardware.&thinsp; As a consequence, C and Zig can remain maniacally focused on performance.(1)</p>
+<ol>
+<li>Andrew Kelley (the language's creator) refers <br> to Zig as <em>a DSL for emitting machine code.</em></li>
+</ol>
+<p>Pursuing an analogy, I've always viewed C as a "small town" &ndash; one whose streets and neighborhoods I've come to know like the back of my hand.&thinsp; By constrast, C++ has morphed into a "big city" &ndash; one with more streets than I could ever explore, and one with certain neighborhoods that the guide-books now tell me to avoid&thinsp;!!</p>
+<p>By maintaining a level of "small town" simplicity lacking in many modern compiled languages, Zig has emerged as a worthy alternative to C; this aspect of Zig also earns the language high-marks when compared against the complexity of Rust &ndash; another "big city" language that looks to supplant C++.  </p>
+<p>And finally, I can't say enough about the warm and welcoming Zig community I've joined at <a href="https://ziggit.dev/">Ziggit</a> &ndash; where you really do feel that "small town" vibe.&nbsp; <img alt="😎" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f60e.svg" title=":sunglasses:" /></p>
+</div>
+<h2 id="getting-started">Getting started</h2>
+<p class="annotate">You can provision <strong>Zig&bull;EM</strong> v25.0.1 on your host computer(1) in three simple steps:</p>
+<ol>
+<li>presently &ndash; <code>windows-x86_64</code>, <code>linux-x86_64</code>, <code>macos-x86_64</code></li>
+</ol>
+<p><span class="twemoji em-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 17h-2V9h-2V7h4m5-4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg></span> &nbsp; download/unpack <a href="https://ziglang.org/download/">Zig v0.13.0</a>, and add the <code class="language-em highlight"><span class="si">zig</span></code> command to your path<br>
+<span class="twemoji em-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 11a2 2 0 0 1-2 2h-2v2h4v2H9v-4a2 2 0 0 1 2-2h2V9H9V7h4a2 2 0 0 1 2 2m4-6H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg></span> &nbsp; download/unpack the <strong>Zig&bull;EM</strong> <a href="https://github.com/em-foundation/zig-em-dev/releases/tag/v25.0.1">sources</a>, and <code class="language-em highlight"><span class="si">cd</span></code> into <code class="language-em"><span class="nf">zig-em-dev/workspace</span></code> <br>
+<span class="twemoji em-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 10.5a1.5 1.5 0 0 1-1.5 1.5c.84 0 1.5.67 1.5 1.5V15c0 1.11-.89 2-2 2H9v-2h4v-2h-2v-2h2V9H9V7h4c1.11 0 2 .89 2 2m4-6H5c-1.09 0-2 .9-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg></span> &nbsp; execute <code class="language-em highlight"><span class="si">zig build</span></code>, which will compile/install the <strong>Zig&bull;EM</strong> CLI program</p>
+<p>When finished, verify your installation by executing <code class="language-em highlight"><span class="si">zig build verify</span></code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[~/zig-em-dev/work]
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>$ zig build verify
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>compiling HOST ...
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    board: LP_EM_CC2340R5
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    setup: ti.cc23xx://default
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>compiling TARG ...
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    image sha: 57a5b811
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    image size: text (1376) + const (364) + data (12) + bss (4)
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>done in 4.79 seconds
+</span></code></pre></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Windows</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><span class="em-small">You should install <a href="https://gitforwindows.org/">Git for Windows</a>, which includes the <strong>Git Bash</strong> shell as well as other stock CLI tools.</span></p>
+</div>
+</div>
+</div>
+<p>Going forward, we'll rely upon the <code class="language-em highlight"><span class="si">zig build zig-em</span></code> sub-command to compile designated <strong>Zig&bull;EM</strong> programs targeting a particular MCU.&thinsp;  For example, the following command explicitly compiles our verification example:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>[~/zig-em-dev/work]
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>$ zig build zig-em -- compile --unit=em.test/em.examples.basic/BlinkerP.em.zig 
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>compiling HOST ...
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    board: LP_EM_CC2340R5     
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    setup: ti.cc23xx://default
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>compiling TARG ...
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    image sha: 57a5b811
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    image size: text (1376) + const (364) + data (12) + bss (4)
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>done in 4.67 seconds
+</span></code></pre></div>
+<div class="admonition bulb">
+<p class="admonition-title">Consider creating a <code class="language-em highlight"><span class="si">zig-em</span></code> command-line alias for the <code class="language-em highlight"><span class="si">zig build zig-em --</span></code> prefix shown above</p>
+</div>
+<h2 id="exploring-zigem">Exploring Zig&bull;EM</h2>
+<p class="annotate"><strong>Zig&bull;EM</strong> supports just one target at this time &ndash; the Texas Instruments <a href="https://www.ti.com/product/CC2340R5">CC2340R5</a> wireless MCU featuring a low-power Arm Cortex-M0+ CPU, a familiar suite of embedded peripherals, and a generic 2.4&thinsp;GHz radio with BLE 5.x support.(1)</p>
+<ol>
+<li>While EM itself has supported dozens of 8/16/32-bit MCUs over the years, let's first focus on "getting <strong>Zig&bull;EM</strong> right" before we branch out to other hardware platforms.</li>
+</ol>
+<p>We strongly encourage you to purchase an inexpensive <a href="https://www.ti.com/tool/LP-EM-CC2340R5">LP-EM-CC2340R5</a> board from TI in their popular <em>LaunchPad</em>&thinsp; form-factor; you should also obtain this <a href="https://www.ti.com/tool/LP-XDS110ET">emulator board</a> if you don't already have TI-XDS110 support through another LaunchPad.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">MacOS</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><span class="em-small">You'll also need to download <a href="https://dr-download.ti.com/software-development/software-programming-tool/MD-QeJBJLj8gq/8.7.0/uniflash_sl.8.7.0.4818.dmg">TI-UniFlash</a> and install the application at its default location.</span></p>
+</div>
+</div>
+</div>
+<p>Armed with target hardware, we can now compile <em>and</em>&thinsp; load our sample program by simply appending the <code class="language-em highlight"><span class="si">--load</span></code> (<code class="language-em highlight"><span class="si">-l</span></code>) option on our command-line:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>[~/zig-em-dev/work]
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>$ zig-em compile -u em.test/em.examples.basic/BlinkerP.em.zig -l
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>compiling HOST ...
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    board: LP_EM_CC2340R5
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    setup: ti.cc23xx://default
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>compiling TARG ...
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    image sha: 57a5b811
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    image size: text (1376) + const (364) + data (12) + bss (4)
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>done in 4.91 seconds
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>loading...
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>done.
+</span></code></pre></div>
+<div class="admonition bulb">
+<p class="admonition-title">Use&thinsp; <code class="language-em highlight"><span class="si">zig-em --help</span></code> followed by&thinsp; <code class="language-em highlight"><span class="si">zig-em &lt;COMMAND&gt; --help</span></code> to learn more about the <strong>Zig&bull;EM</strong> CLI</p>
+</div>
+<p>The <code class="language-em"><span class="nf">em.test/em.examples.basic</span></code> sub-folder contains over a dozen sample programs &ndash; each of which you can now compile and load onto your <code>LP-EM-CC2340R5</code> hardware.&thinsp;  While these programs do little more than blink LEDs, start immersing yourself in their overall structure:</p>
+<div class="language-zigem highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">em.examples.basic/BlinkerP.em.zig</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span>
+<span class="normal"><a href="#__codelineno-3-11">11</a></span>
+<span class="normal"><a href="#__codelineno-3-12">12</a></span>
+<span class="normal"><a href="#__codelineno-3-13">13</a></span>
+<span class="normal"><a href="#__codelineno-3-14">14</a></span>
+<span class="normal"><a href="#__codelineno-3-15">15</a></span>
+<span class="normal"><a href="#__codelineno-3-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="nb">em</span><span class="x"> = </span><span class="nf">@import</span><span class="x">(</span><span class="s">&quot;../../.gen/em.zig&quot;</span><span class="x">);</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="nb">em__U</span><span class="x"> = </span><span class="nb">em.module</span><span class="x">(</span><span class="nf">@This</span><span class="x">(), .{});</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="kt">AppLed</span><span class="x"> = </span><span class="nb">em.import</span><span class="x">.</span><span class="kt">@&quot;em__distro/BoardC&quot;</span><span class="x">.</span><span class="kt">AppLed</span><span class="x">;</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="kt">Common</span><span class="x"> = </span><span class="nb">em.import</span><span class="x">.</span><span class="kt">@&quot;em.mcu/Common&quot;</span><span class="x">;</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="nt">pub const EM__TARG</span><span class="x"> = </span><span class="kr">struct</span><span class="x"> {</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="x">    </span><span class="kr">pub</span><span class="x"> </span><span class="kr">fn</span><span class="x"> </span><span class="nb">em__run</span><span class="x">() </span><span class="kt">void</span><span class="x"> {</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="x">        </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">on</span><span class="x">();</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="x">        </span><span class="k">for</span><span class="x"> (0..10) |</span><span class="n">_</span><span class="x">| {</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="x">            </span><span class="kt">Common</span><span class="x">.</span><span class="kt">BusyWait</span><span class="x">.</span><span class="nf">wait</span><span class="x">(500_000);</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="x">            </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">toggle</span><span class="x">();</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="x">        }</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="x">        </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">off</span><span class="x">();</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="x">    }</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="x">};</span>
+</span></code></pre></div></td></tr></table></div>
+<p>Our next few blog posts will deep-dive into this and other examples &ndash; focusing on core concepts and constructs first introduced in EM, but now seen through a Zig language lense.</p>
+<div class="admonition tip">
+<p class="admonition-title">Browsing the <strong>Zig&bull;EM</strong> sources using VS Code</p>
+<p>The <strong>VS Code - Zig Language</strong> <a href="https://marketplace.visualstudio.com/items?itemName=ziglang.vscode-zig">extension</a> goes a long way towards streamlining your exploration of <strong>Zig&bull;EM</strong> through features such as syntax highlighting and code navigation; a companion language server (<strong>ZLS</strong>) enables outline views, hover help, and intellisense completion.</p>
+<p>At the same time, the <strong>Zig Language</strong> extension knows nothing about the <strong>Zig&bull;EM</strong> framework per se; the extension renders <code class="language-em"><span class="nf">BlinkerP.em.zig</span></code> no differently from <code class="language-em"><span class="nf">build.zig</span></code> or any other Zig source file.</p>
+<p>We'll shortly release a fork of the Zig extension and language server which (through some minor modifications) has rudimentary awareness of <strong>Zig&bull;EM</strong>.&thinsp;  As illustrated by the example above, files like <code class="language-em"><span class="nf">BlinkerP.em.zig</span></code> would now have their EM-based constructs distinctly <span class="language-zigem"><span class="nb">highlighted</span></span> &ndash; further flattening your learning curve.</p>
+</div>
+<h2 id="looking-ahead">Looking ahead</h2>
+<div class="em-ul em-ul-check">
+<p>skill-up on the Zig language, using Karl Sequin's <a href="https://www.openmymind.net/learning_zig/">Learning Zig</a> as a starting-point</p>
+<p>spend some cycles browsing the <a href="https://github.com/em-foundation/zig-em-dev">zig-em-dev</a> snapshot downloaded earlier</p>
+<p>direct all questions/comments to this <a href="https://ziggit.dev/t/introducing-zig-em/5794">showcase post</a> on the <strong>Ziggit</strong> forum</p>
+</div>
+<p><span class="em-float-right">Happy coding&thinsp;!!! &ensp; <img alt="🌝" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f31d.svg" title=":full_moon_with_face:" />&nbsp;&nbsp;&nbsp;<img alt="💻" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f4bb.svg" title=":computer:" /></span></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 &ndash; The EM Foundation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/company/the-em-foundation/about/?viewAsMember=true" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/em-foundation" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.top"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+        <script src="../extra.js"></script>
+      
+        <script src="../js/open_in_new_tab.js"></script>
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>
