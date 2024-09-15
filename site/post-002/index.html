@@ -12,6 +12,8 @@
         <link rel="prev" href="../post-001/">
       
       
+        <link rel="next" href="../post-003/">
+      
       
       <link rel="icon" href="../assets/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
@@ -470,6 +472,7 @@
 
 <div class="em-nav-arrow">
 <p><a href="/post-001" title="The EM language is dead, long live EM !!!">&cularr;</a></p>
+<p><span class="em-float-right"><a href="/post-003" title="Touring the Zig&bull;EM code-scape">&curarr;</a></span></p>
 </div>
 <figure id="fig0" style="display:none"></figure>
 <h2 id="setting-expectations">Setting expectations</h2>
@@ -480,39 +483,43 @@
 </ol>
 <p>Furthermore, Zig eschews much of the "syntactic flexibility" (operator overloading, optional lexical elements, etc) found in contemporary languages ranging from C++ to Ruby &ndash; leaving us with a somewhat rudimentary set of programmatic mechanisms to realize <strong>Zig&bull;EM</strong>.</p>
 <p>As a stand-alone language, EM could introduce keywords like <code class="language-zigem"><span class="k">config</span></code> and <code class="language-zigem"><span class="k">proxy</span></code> to reinforce its novel concepts; and EM's language translator could impart very specific meanings to otherwise stock programming constructs like <code class="language-zigem"><span class="k">module</span></code> and <code class="language-zigem"><span class="k">interface</span></code>.</p>
-<p>Grafting EM onto Zig, however, requires us to operate within the syntactic and semantic constraints of the latter language; ensuring that EM's concepts and constructs don't become "lost in translation", so to speak, emerges as our greatest challenge.</p>
+<p>Grafting EM onto Zig, however, requires us to operate within the syntactic and semantic constraints of the latter language.&thinsp; Ensuring that EM's concepts and constructs don't become "lost in translation", so to speak, emerges as our greatest challenge.</p>
 <div class="admonition info">
 <p class="admonition-title">FULL DISCLOSURE &ndash; My first impressions of Zig</p>
 <p>Six months ago, I hadn't even <em>heard</em>&thinsp; of Zig&thinsp;!!&nbsp; In the interim, of course, I've not only immersed myself in the language but also managed to field my first iteration of the <strong>Zig&bull;EM</strong> framework.</p>
 <p>To understand my ever-growing fascination with Zig, let's roll the clock back to the 1980s &ndash; a time in which C had firmly established itself as a universal "middle-level" language &ndash; used for system programming on 8-bit microprocessors, 16-bit mini-computers, and 32-bit mainframes alike.</p>
-<p>Like Zig, the C language has no inherent runtime environment supported across all target processors; building upon a "bare-metal" foundation, libraries of C functions (general-purpose or domain-specific) would address the runtime needs of a broad range of applications.</p>
+<p>Like Zig, the C language has no inherent runtime environment supported across all target processors.&thinsp; Building upon a "bare-metal" foundation, libraries of C functions (general-purpose or domain-specific) would address the runtime needs of a broad range of applications.</p>
 <p class="annotate">Programmers generally characterize both C and Zig as inherently <em>small</em>&thinsp; languages &ndash; embodying a set of rudimentary mechanisms for constructing higher-level libraries, while staying close to the underlying hardware.&thinsp; As a consequence, C and Zig can remain maniacally focused on performance.(1)</p>
 <ol>
 <li>Andrew Kelley (the language's creator) refers <br> to Zig as <em>a DSL for emitting machine code.</em></li>
 </ol>
 <p>Pursuing an analogy, I've always viewed C as a "small town" &ndash; one whose streets and neighborhoods I've come to know like the back of my hand.&thinsp; By constrast, C++ has morphed into a "big city" &ndash; one with more streets than I could ever explore, and one with certain neighborhoods that the guide-books now tell me to avoid&thinsp;!!</p>
-<p>By maintaining a level of "small town" simplicity lacking in many modern compiled languages, Zig has emerged as a worthy alternative to C; this aspect of Zig also earns the language high-marks when compared against the complexity of Rust &ndash; another "big city" language that looks to supplant C++.  </p>
+<p>By maintaining a level of "small town" simplicity lacking in many modern compiled languages, Zig has emerged as a worthy alternative to C.&thinsp; This aspect of Zig also earns the language high-marks when compared against the complexity of Rust &ndash; another "big city" language that looks to supplant C++.  </p>
 <p>And finally, I can't say enough about the warm and welcoming Zig community I've joined at <a href="https://ziggit.dev/">Ziggit</a> &ndash; where you really do feel that "small town" vibe.&nbsp; <img alt="😎" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f60e.svg" title=":sunglasses:" /></p>
 </div>
 <h2 id="getting-started">Getting started</h2>
-<p class="annotate">You can provision <strong>Zig&bull;EM</strong> v25.0.1 on your host computer(1) in three simple steps:</p>
+<div class="admonition tools">
+<p class="admonition-title">We've updated this material to reflect the latest release of <strong>Zig&bull;EM</strong></p>
+</div>
+<p class="annotate">You can provision <strong>Zig&bull;EM</strong> v25.0.x on your host computer(1) in three simple steps:</p>
 <ol>
 <li>presently &ndash; <code>windows-x86_64</code>, <code>linux-x86_64</code>, <code>macos-x86_64</code></li>
 </ol>
 <p><span class="twemoji em-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 17h-2V9h-2V7h4m5-4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg></span> &nbsp; download/unpack <a href="https://ziglang.org/download/">Zig v0.13.0</a>, and add the <code class="language-em highlight"><span class="si">zig</span></code> command to your path<br>
-<span class="twemoji em-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 11a2 2 0 0 1-2 2h-2v2h4v2H9v-4a2 2 0 0 1 2-2h2V9H9V7h4a2 2 0 0 1 2 2m4-6H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg></span> &nbsp; download/unpack the <strong>Zig&bull;EM</strong> <a href="https://github.com/em-foundation/zig-em-dev/releases/tag/v25.0.1">sources</a>, and <code class="language-em highlight"><span class="si">cd</span></code> into <code class="language-em"><span class="nf">zig-em-dev/workspace</span></code> <br>
+<span class="twemoji em-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 11a2 2 0 0 1-2 2h-2v2h4v2H9v-4a2 2 0 0 1 2-2h2V9H9V7h4a2 2 0 0 1 2 2m4-6H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg></span> &nbsp; download/unpack the latest <strong>Zig&bull;EM</strong> <a href="https://github.com/em-foundation/zigem-dev/releases">sources</a>, and <code class="language-em highlight"><span class="si">cd</span></code> into <code class="language-em"><span class="nf">zigem-dev/workspace</span></code> <br>
 <span class="twemoji em-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 10.5a1.5 1.5 0 0 1-1.5 1.5c.84 0 1.5.67 1.5 1.5V15c0 1.11-.89 2-2 2H9v-2h4v-2h-2v-2h2V9H9V7h4c1.11 0 2 .89 2 2m4-6H5c-1.09 0-2 .9-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg></span> &nbsp; execute <code class="language-em highlight"><span class="si">zig build</span></code>, which will compile/install the <strong>Zig&bull;EM</strong> CLI program</p>
 <p>When finished, verify your installation by executing <code class="language-em highlight"><span class="si">zig build verify</span></code>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[~/zig-em-dev/work]
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>$ zig build verify
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>compiling HOST ...
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    board: LP_EM_CC2340R5
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    setup: ti.cc23xx://default
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>compiling TARG ...
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    image sha: 57a5b811
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    image size: text (1376) + const (364) + data (12) + bss (4)
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>done in 4.79 seconds
-</span></code></pre></div>
+<div class="language-text highlight">
+<p><pre><code><span class="em-color-blue">[zigem-dev/workspace]</span>
+$ <span class="em-color-orange">zig build verify</span>
+compiling META ...
+    board: LP_EM_CC2340R5
+    setup: ti.cc23xx://default
+compiling TARG ...
+    image sha: 57a5b811
+    image size: text (1376) + const (364) + data (12) + bss (4)
+done in 4.79 seconds</code></pre></p>
+</div>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -520,26 +527,29 @@
 </div>
 </div>
 </div>
-<p>Going forward, we'll rely upon the <code class="language-em highlight"><span class="si">zig build zig-em</span></code> sub-command to compile designated <strong>Zig&bull;EM</strong> programs targeting a particular MCU.&thinsp;  For example, the following command explicitly compiles our verification example:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>[~/zig-em-dev/work]
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>$ zig build zig-em -- compile --unit=em.test/em.examples.basic/BlinkerP.em.zig 
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>compiling HOST ...
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    board: LP_EM_CC2340R5     
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    setup: ti.cc23xx://default
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>compiling TARG ...
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    image sha: 57a5b811
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    image size: text (1376) + const (364) + data (12) + bss (4)
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>done in 4.67 seconds
-</span></code></pre></div>
+<div id="zigem-command">
+</div>
+<p>Going forward, we'll rely upon the <code class="language-em highlight"><span class="si">zig build zigem</span></code> sub-command to compile designated <strong>Zig&bull;EM</strong> programs targeting a particular MCU.&thinsp;  For example, the following command explicitly compiles our verification example:</p>
+<div class="language-text highlight">
+<p><pre><code><span class="em-color-blue">[zigem-dev/workspace]</span>
+$ <span class="em-color-orange">zig build zigem -- compile -f em.core/em.examples.basic/BlinkerP.em.zig</span>
+compiling META ...
+    board: LP_EM_CC2340R5
+    setup: ti.cc23xx://default
+compiling TARG ...
+    image sha: 57a5b811
+    image size: text (1376) + const (364) + data (12) + bss (4)
+done in 4.67 seconds</code></pre></p>
+</div>
 <div class="admonition bulb">
-<p class="admonition-title">Consider creating a <code class="language-em highlight"><span class="si">zig-em</span></code> command-line alias for the <code class="language-em highlight"><span class="si">zig build zig-em --</span></code> prefix shown above</p>
+<p class="admonition-title">Consider creating a <code class="language-em highlight"><span class="si">zigem</span></code> command-line alias for the <code class="language-em highlight"><span class="si">zig build zigem --</span></code> prefix shown above</p>
 </div>
 <h2 id="exploring-zigem">Exploring Zig&bull;EM</h2>
 <p class="annotate"><strong>Zig&bull;EM</strong> supports just one target at this time &ndash; the Texas Instruments <a href="https://www.ti.com/product/CC2340R5">CC2340R5</a> wireless MCU featuring a low-power Arm Cortex-M0+ CPU, a familiar suite of embedded peripherals, and a generic 2.4&thinsp;GHz radio with BLE 5.x support.(1)</p>
 <ol>
 <li>While EM itself has supported dozens of 8/16/32-bit MCUs over the years, let's first focus on "getting <strong>Zig&bull;EM</strong> right" before we branch out to other hardware platforms.</li>
 </ol>
-<p>We strongly encourage you to purchase an inexpensive <a href="https://www.ti.com/tool/LP-EM-CC2340R5">LP-EM-CC2340R5</a> board from TI in their popular <em>LaunchPad</em>&thinsp; form-factor; you should also obtain this <a href="https://www.ti.com/tool/LP-XDS110ET">emulator board</a> if you don't already have TI-XDS110 support through another LaunchPad.</p>
+<p>We strongly encourage you to purchase an inexpensive <a href="https://www.ti.com/tool/LP-EM-CC2340R5">LP-EM-CC2340R5</a> board from TI in their popular <em>LaunchPad</em>&thinsp; form-factor.&thinsp; In addition, you should obtain this <a href="https://www.ti.com/tool/LP-XDS110ET">emulator board</a> if you don't already have TI-XDS110 support through another LaunchPad.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">MacOS</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -548,65 +558,66 @@
 </div>
 </div>
 <p>Armed with target hardware, we can now compile <em>and</em>&thinsp; load our sample program by simply appending the <code class="language-em highlight"><span class="si">--load</span></code> (<code class="language-em highlight"><span class="si">-l</span></code>) option on our command-line:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>[~/zig-em-dev/work]
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>$ zig-em compile -u em.test/em.examples.basic/BlinkerP.em.zig -l
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>compiling HOST ...
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    board: LP_EM_CC2340R5
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    setup: ti.cc23xx://default
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>compiling TARG ...
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    image sha: 57a5b811
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    image size: text (1376) + const (364) + data (12) + bss (4)
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>done in 4.91 seconds
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>loading...
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>done.
-</span></code></pre></div>
-<div class="admonition bulb">
-<p class="admonition-title">Use&thinsp; <code class="language-em highlight"><span class="si">zig-em --help</span></code> followed by&thinsp; <code class="language-em highlight"><span class="si">zig-em &lt;COMMAND&gt; --help</span></code> to learn more about the <strong>Zig&bull;EM</strong> CLI</p>
+<div class="language-text highlight">
+<p><pre><code><span class="em-color-blue">[zigem-dev/workspace]</span>
+$ <span class="em-color-orange">zigem compile -f em.core/em.examples.basic/BlinkerP.em.zig -l</span>
+compiling META ...
+    board: LP_EM_CC2340R5
+    setup: ti.cc23xx://default
+compiling TARG ...
+    image sha: 57a5b811
+    image size: text (1376) + const (364) + data (12) + bss (4)
+done in 4.91 seconds
+loading...
+done.</code></pre></p>
 </div>
-<p>The <code class="language-em"><span class="nf">em.test/em.examples.basic</span></code> sub-folder contains over a dozen sample programs &ndash; each of which you can now compile and load onto your <code>LP-EM-CC2340R5</code> hardware.&thinsp;  While these programs do little more than blink LEDs, start immersing yourself in their overall structure:</p>
-<div class="language-zigem highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">em.examples.basic/BlinkerP.em.zig</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-3-10">10</a></span>
-<span class="normal"><a href="#__codelineno-3-11">11</a></span>
-<span class="normal"><a href="#__codelineno-3-12">12</a></span>
-<span class="normal"><a href="#__codelineno-3-13">13</a></span>
-<span class="normal"><a href="#__codelineno-3-14">14</a></span>
-<span class="normal"><a href="#__codelineno-3-15">15</a></span>
-<span class="normal"><a href="#__codelineno-3-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="nb">em</span><span class="x"> = </span><span class="nf">@import</span><span class="x">(</span><span class="s">&quot;../../.gen/em.zig&quot;</span><span class="x">);</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="nb">em__U</span><span class="x"> = </span><span class="nb">em.module</span><span class="x">(</span><span class="nf">@This</span><span class="x">(), .{});</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="kt">AppLed</span><span class="x"> = </span><span class="nb">em.import</span><span class="x">.</span><span class="kt">@&quot;em__distro/BoardC&quot;</span><span class="x">.</span><span class="kt">AppLed</span><span class="x">;</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="kt">Common</span><span class="x"> = </span><span class="nb">em.import</span><span class="x">.</span><span class="kt">@&quot;em.mcu/Common&quot;</span><span class="x">;</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="nt">pub const EM__TARG</span><span class="x"> = </span><span class="kr">struct</span><span class="x"> {</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="x">    </span><span class="kr">pub</span><span class="x"> </span><span class="kr">fn</span><span class="x"> </span><span class="nb">em__run</span><span class="x">() </span><span class="kt">void</span><span class="x"> {</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="x">        </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">on</span><span class="x">();</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="x">        </span><span class="k">for</span><span class="x"> (0..10) |</span><span class="n">_</span><span class="x">| {</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="x">            </span><span class="kt">Common</span><span class="x">.</span><span class="kt">BusyWait</span><span class="x">.</span><span class="nf">wait</span><span class="x">(500_000);</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="x">            </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">toggle</span><span class="x">();</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="x">        }</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="x">        </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">off</span><span class="x">();</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="x">    }</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="x">};</span>
+<div class="admonition bulb">
+<p class="admonition-title">Use&thinsp; <code class="language-em highlight"><span class="si">zigem --help</span></code> followed by&thinsp; <code class="language-em highlight"><span class="si">zigem &lt;COMMAND&gt; --help</span></code> to learn more about the <strong>Zig&bull;EM</strong> CLI.</p>
+</div>
+<p>The <code class="language-em"><span class="nf">em.core/em.examples.basic</span></code> sub-folder contains over a dozen sample programs &ndash; each of which you can now compile and load onto your <code>LP-EM-CC2340R5</code> hardware.&thinsp;  While these programs do little more than blink LEDs, start immersing yourself in their overall structure:</p>
+<div class="language-zigem highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">em.examples.basic/BlinkerP.em.zig</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="nb">em</span><span class="x"> = </span><span class="nf">@import</span><span class="x">(</span><span class="s">&quot;../../zigem/em.zig&quot;</span><span class="x">);</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="nb">em__U</span><span class="x"> = </span><span class="nb">em.module</span><span class="x">(</span><span class="nf">@This</span><span class="x">(), .{});</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="kt">AppLed</span><span class="x"> = </span><span class="nb">em.import</span><span class="x">.</span><span class="kt">@&quot;em__distro/BoardC&quot;</span><span class="x">.</span><span class="kt">AppLed</span><span class="x">;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="kt">Common</span><span class="x"> = </span><span class="nb">em.import</span><span class="x">.</span><span class="kt">@&quot;em.mcu/Common&quot;</span><span class="x">;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="nt">pub const EM__TARG</span><span class="x"> = </span><span class="kr">struct</span><span class="x"> {</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="x">    </span><span class="kr">pub</span><span class="x"> </span><span class="kr">fn</span><span class="x"> </span><span class="nb">em__run</span><span class="x">() </span><span class="kt">void</span><span class="x"> {</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="x">        </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">on</span><span class="x">();</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="x">        </span><span class="k">for</span><span class="x"> (0..10) |</span><span class="n">_</span><span class="x">| {</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="x">            </span><span class="kt">Common</span><span class="x">.</span><span class="kt">BusyWait</span><span class="x">.</span><span class="nf">wait</span><span class="x">(500_000);</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="x">            </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">toggle</span><span class="x">();</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="x">        }</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="x">        </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">off</span><span class="x">();</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="x">    }</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="x">};</span>
 </span></code></pre></div></td></tr></table></div>
-<p>Our next few blog posts will deep-dive into this and other examples &ndash; focusing on core concepts and constructs first introduced in EM, but now seen through a Zig language lense.</p>
+<p>Our next few blog posts will deep-dive into this and other examples &ndash; focusing on core concepts and constructs first introduced in <a href="https://docs.openem.org/intro/">EM</a>&thinsp;, but now seen through a Zig language lense.</p>
 <div class="admonition tip">
 <p class="admonition-title">Browsing the <strong>Zig&bull;EM</strong> sources using VS Code</p>
 <p>The <strong>VS Code - Zig Language</strong> <a href="https://marketplace.visualstudio.com/items?itemName=ziglang.vscode-zig">extension</a> goes a long way towards streamlining your exploration of <strong>Zig&bull;EM</strong> through features such as syntax highlighting and code navigation; a companion language server (<strong>ZLS</strong>) enables outline views, hover help, and intellisense completion.</p>
 <p>At the same time, the <strong>Zig Language</strong> extension knows nothing about the <strong>Zig&bull;EM</strong> framework per se; the extension renders <code class="language-em"><span class="nf">BlinkerP.em.zig</span></code> no differently from <code class="language-em"><span class="nf">build.zig</span></code> or any other Zig source file.</p>
-<p>We'll shortly release a fork of the Zig extension and language server which (through some minor modifications) has rudimentary awareness of <strong>Zig&bull;EM</strong>.&thinsp;  As illustrated by the example above, files like <code class="language-em"><span class="nf">BlinkerP.em.zig</span></code> would now have their EM-based constructs distinctly <span class="language-zigem"><span class="nb">highlighted</span></span> &ndash; further flattening your learning curve.</p>
+<p>We'll now released a fork of the Zig extension and language server which (through some minor modifications) has rudimentary awareness of <strong>Zig&bull;EM</strong>.&thinsp;  As illustrated by the example above, files like <code class="language-em"><span class="nf">BlinkerP.em.zig</span></code> would now have their EM-based constructs distinctly <span class="language-zigem"><span class="nb">highlighted</span></span> &ndash; further flattening your learning curve.</p>
 </div>
 <h2 id="looking-ahead">Looking ahead</h2>
 <div class="em-ul em-ul-check">
 <p>skill-up on the Zig language, using Karl Sequin's <a href="https://www.openmymind.net/learning_zig/">Learning Zig</a> as a starting-point</p>
-<p>spend some cycles browsing the <a href="https://github.com/em-foundation/zig-em-dev">zig-em-dev</a> snapshot downloaded earlier</p>
+<p>spend some cycles browsing the <a href="https://github.com/em-foundation/zigem-dev">zigem-dev</a> snapshot downloaded earlier</p>
 <p>direct all questions/comments to this <a href="https://ziggit.dev/t/introducing-zig-em/5794">showcase post</a> on the <strong>Ziggit</strong> forum</p>
 </div>
 <p><span class="em-float-right">Happy coding&thinsp;!!! &ensp; <img alt="🌝" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f31d.svg" title=":full_moon_with_face:" />&nbsp;&nbsp;&nbsp;<img alt="💻" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f4bb.svg" title=":computer:" /></span></p>

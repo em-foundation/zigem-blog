@@ -1,0 +1,922 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../post-002/">
+      
+      
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+    
+    
+      
+        <title>Touring the Zig•EM code-scape - Blogging Zig&bull;EM</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+  
+  
+  
+  
+  <style>:root{--md-annotation-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-12 6 6-6-6-6-1.4 1.4 4.6 4.6-4.6 4.6L10 18Z"/></svg>');}</style>
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Quicksand";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-X2KECJ2QG5"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-X2KECJ2QG5",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-X2KECJ2QG5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  <meta property="og:title" content="Post 003: Touring the Zig&bull;EM code-scape"/>
+
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#touring-the-zigem-code-scape" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Blogging Zig&amp;bull;EM" class="md-header__button md-logo" aria-label="Blogging Zig&bull;EM" data-md-component="logo">
+      
+  <img src="../assets/logo12.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Blogging Zig&bull;EM
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Touring the Zig&bull;EM code-scape
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Blogging Zig&amp;bull;EM" class="md-nav__button md-logo" aria-label="Blogging Zig&bull;EM" data-md-component="logo">
+      
+  <img src="../assets/logo12.png" alt="logo">
+
+    </a>
+    Blogging Zig&bull;EM
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2024/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#updating-your-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating your installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#repository-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Repository organization
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-code-constructs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source code constructs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#program-compilation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Program compilation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-exploration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Further exploration
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href=".." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/57962169?v=4" alt="Bob Frankel">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Bob Frankel
+                        
+                      </strong>
+                      <br>
+                      Chief Coding Officer
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
+                        <time datetime="2024-09-15 00:00:00" class="md-ellipsis">September 15, 2024</time>
+                      </div>
+                    </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              10 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+
+
+<h1 id="touring-the-zigem-code-scape">Touring the Zig&bull;EM code-scape</h1>
+<p>The next few blog posts will explore the <strong>Zig&bull;EM</strong> programming framework in ever-greater detail &ndash; starting with instructions for installing the latest software version, and then moving on to a 10,000' overview that touches upon some core concepts and constructs of <strong>Zig&bull;EM</strong>.</p>
+<!-- more -->
+
+<div class="em-nav-arrow">
+<p><a href="/post-002" title="Announcing Zig&bull;EM v25.0.1">&cularr;</a></p>
+</div>
+<h2 id="updating-your-installation">Updating your installation</h2>
+<p>The process for (initially) installing and (subsequently) updating your local version of <strong>Zig&bull;EM</strong> boils down to three basic steps:</p>
+<div class="em-ul em-ul-bull"></div>
+<p><span class="twemoji em-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 17h-2V9h-2V7h4m5-4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg></span> &nbsp; install <a href="https://ziglang.org/download/">Zig</a><br>
+<span class="twemoji em-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 11a2 2 0 0 1-2 2h-2v2h4v2H9v-4a2 2 0 0 1 2-2h2V9H9V7h4a2 2 0 0 1 2 2m4-6H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg></span> &nbsp; clone <a href="https://github.com/em-foundation/zig-em-dev/">zigem-dev</a><br>
+<span class="twemoji em-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 10.5a1.5 1.5 0 0 1-1.5 1.5c.84 0 1.5.67 1.5 1.5V15c0 1.11-.89 2-2 2H9v-2h4v-2h-2v-2h2V9H9V7h4c1.11 0 2 .89 2 2m4-6H5c-1.09 0-2 .9-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg></span> &nbsp; execute <code class="language-em highlight"><span class="si">zig build</span></code></p>
+<p class="annotate">As part of step <span class="twemoji em-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 17h-2V9h-2V7h4m5-4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg></span>, you should have added the <code>zig</code> executable to your path.&thinsp; Invoke the <code class="language-em highlight"><span class="si">zig version</span></code> command for confirmation.(1)</p>
+<ol>
+<li><strong>Zig&bull;EM</strong> currently requires version 0.13.0 of Zig</li>
+</ol>
+<p class="annotate">As for step <span class="twemoji em-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 11a2 2 0 0 1-2 2h-2v2h4v2H9v-4a2 2 0 0 1 2-2h2V9H9V7h4a2 2 0 0 1 2 2m4-6H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg></span>, an initial <code class="language-em highlight"><span class="si">git clone</span></code> and subsequent <code class="language-em highlight"><span class="si">git pull</span></code> of the <code class="language-em"><span class="nf">zigem-dev</span></code> repository will take you to the latest release of <strong>Zig&bull;EM</strong>.&thinsp; Tags on the main branch (<code>v25.0.1</code>, <code>v25.0.2</code>, ...) enable you to easily move to earlier releases.(1)</p>
+<ol>
+<li>If you wish to avoid the <code class="language-em highlight"><span class="si">git</span></code> command altogether, just<br>download the sources for individual <a href="https://github.com/em-foundation/zig-em-dev/releases">releases</a>.</li>
+</ol>
+<p>Step <span class="twemoji em-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 10.5a1.5 1.5 0 0 1-1.5 1.5c.84 0 1.5.67 1.5 1.5V15c0 1.11-.89 2-2 2H9v-2h4v-2h-2v-2h2V9H9V7h4c1.11 0 2 .89 2 2m4-6H5c-1.09 0-2 .9-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/></svg></span> will then build the <code class="language-em highlight"><span class="si">zigem</span></code> command-line executable, as well as download/install other required artifacts.&thinsp; Invoke <code class="language-em highlight"><span class="si">zig build verify</span></code> as a final test.</p>
+<div class="admonition info">
+<p class="admonition-title">You may want to consult these <a href="/post-002/#getting-started">Getting started</a> instructions for more detail on first-time installation.</p>
+</div>
+<div class="admonition zig">
+<p class="admonition-title">The Zig cache &mdash; a cornerstone of <code class="language-em highlight"><span class="si">zig build</span></code></p>
+<p>As you might expect, the first invocation of <code class="language-em highlight"><span class="si">zig build</span></code> can take a fair amount of time; subsequent invocations of <code class="language-em highlight"><span class="si">zig build</span></code>, however, can complete almost instantenously.&thinsp;  Not unlike <code>make</code>, the zig build-system strives to perform the minimal number of steps required to complete the task at hand.</p>
+<p class="annotate">Should you choose to learn more(1)about the build-system, you'll quickly come to appreciate the critical role played by the <strong>Zig cache</strong> &ndash; a fascinating foundational element first described <a href="https://ziglang.org/download/0.4.0/release-notes.html#Build-Artifact-Caching">here</a> in detail.&thinsp;  In simple terms, virtually any artifact touched when invoking <code class="language-em highlight"><span class="si">zig build</span></code> will persist in Zig's filesystem cache.</p>
+<ol>
+<li><a href="https://ziglang.org/learn/build-system/" title="standard documentation">ziglang.org</a><br><a href="https://zig.news/xq/zig-build-explained-part-1-59lf" title="introductory tutorial">zig.news</a><br><a href="https://kristoff.it/blog/maintain-it-with-zig/" title="building C/C++">kristoff.it</a><br><a href="https://mitchellh.com/zig/build-internals" title="build-system internals">michelh.com</a></li>
+</ol>
+<p>Strange as it may seem, you won't find anything resembling a <code class="language-em highlight"><span class="si">zig clean</span></code> command; all cached artifacts have a unique content-based identifier.&thinsp;  But sometimes to alleviate any lingering doubts about cache coherence, I will delete the special <code>.zig-cache/</code> and <code>zig-out/</code> folders in the repository's root before invoking <code class="language-em highlight"><span class="si">zig build</span></code>. <img alt="😉" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f609.svg" title=":wink:" /></p>
+</div>
+<p class="annotate">The artifacts provisioned through <code class="language-em highlight"><span class="si">zig build</span></code> include a version of this <a href="https://marketplace.visualstudio.com/items?itemName=ziglang.vscode-zig">Zig Language</a> extension for <strong>VS Code</strong> &ndash; specially modified to add awarenesss of the <strong>Zig&bull;EM</strong> framework.&thinsp; Forked from upstream repositories, this extension currently functions as a "drop-in" replacement.(1)</p>
+<ol>
+<li>If you've already installed the stock <strong>Zig Language</strong> extension,<br>you'll have to disable it within the <code>zigem-dev</code> workspace.</li>
+</ol>
+<p class="annotate">To install, invoke <strong>Extensions: Install from VSIX...</strong> from the VS Code <strong>Command Palette</strong> and then navigate to your <code>zigem-dev/zig-out/tools/</code> folder.&thinsp; This folder should contain a file named <code>vscode-zigem-<em>VERSION</em>.vsix</code>, which you can now select and <strong>Install</strong>.(1)</p>
+<ol>
+<li>If you find multiple <code>.vsix</code> files in the folder, select the one with the highest <code><em>VERSION</em></code> number.</li>
+</ol>
+<p>Once complete, invoke <strong>Command Palette &gt; Developer: Reload Window</strong> to refresh your workspace.&thinsp; If all goes as planned, you'll see a <strong>Zig&bull;EM activated</strong> popup appear briefly.</p>
+<h2 id="repository-organization">Repository organization</h2>
+<p>With our <code>vscode-zigem</code> extension in place, let's start exploring the <code>zigem-dev</code> repository itself &ndash; beginning with its top-level organization as a "typical" Zig project:</p>
+<figure id="fig1">
+<p><a class="glightbox" href="/assets/fig-003-1.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Image info" src="/assets/fig-003-1.png" /></a></p>
+<figcaption>Zig Project 
+</figcaption>
+</figure>
+<div class="admonition zig">
+<p class="admonition-title">It all starts with <code>build.zig</code></p>
+<p>Even if you never plan to follow-up on the <code class="language-em highlight"><span class="si">zig build</span></code> references cited earlier, do invest under a minute of your valuable time digesting this material found at <a href="https://zig.guide/build-system/zig-build">zig.guide</a>.</p>
+</div>
+<p>Drilling down into the special <code>workspace/</code> folder highlighted above, we formally enter the domain of <strong>Zig&bull;EM</strong> &ndash; featuring a number of <strong>packages</strong> with (unique) names like <code class="language-zigem highlight"><span class="kt">em.core</span></code>, which in turn contain (uniquely-named) <strong>buckets</strong> such as <code class="language-zigem highlight"><span class="kt">em.utils</span></code> and <code class="language-zigem highlight"><span class="kt">em.examples.basic</span></code>.</p>
+<!--
+!!! info "When mature, this embryonic `workspace` folder will cleave from the main **Zig&bull;EM** repository."
+-->
+
+<figure id="fig2">
+<p><a class="glightbox" href="/assets/fig-003-2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Image info" src="/assets/fig-003-2.png" /></a></p>
+<figcaption>Zig&bull;EM Workspace 
+</figcaption>
+</figure>
+<p>A <strong>Zig&bull;EM</strong> workspace contains a special <code>zigem.ini</code> file at its root, along with a distinguished <code>zigem-package.ini</code> file at the top of each <strong>package</strong> found therein.&thinsp; We'll visit these as well as other <code>.ini</code> configuration files over the course of time.</p>
+<!--
+!!! abstract "Terminology&thinsp;:: **Zig&bull;EM** = Zig + EM"
+
+    Mapping core concepts and constructs of the original [EM language](https://docs.openem.org/) into Zig will invariably lead to _terminology clashes_, in which a term like **package** has a distinct meaning in each language domain.&thinsp; When ambiguities do arise, we'll qualify these terms in context.
+-->
+
+<p>Descending one more level in our <strong>package &gt; bucket</strong> hiearchy, we come to individual compilation <strong>units</strong> &ndash; Zig source files which uses a novel <code class="language-zigem highlight"><span class="s">&quot;em&quot;</span></code> library provided by the <strong>Zig&bull;EM</strong> framework.&thinsp; A special <code>.em.zig</code> file extension plus an associated icon visually distinguish a <strong>Zig&bull;EM unit</strong> from "ordinary" Zig sources [<code>src/*.zig</code>] depicted <a href="#fig1">earlier</a>.</p>
+<figure id="fig3">
+<p><a class="glightbox" href="/assets/fig-003-3.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Image info" src="/assets/fig-003-3.png" /></a></p>
+<figcaption>Zig&bull;EM Units 
+</figcaption>
+</figure>
+<div class="admonition info">
+<p class="admonition-title">We'll soon take a closer look at the <code>BlinkerP.em.zig</code> and <code>FiberP.em.zig</code> source files.</p>
+</div>
+<p>By design, <strong>Zig&bull;EM</strong> limits its <strong>package &gt; bucket &gt; unit</strong> hiearchy to just three levels.&thinsp; The names chosen for top-level packages and their constituent buckets will, however, often assume a <code>long.qualified.form</code> &ndash; used to ensure a measure of uniqueness and durability.</p>
+<div class="admonition bulb">
+<p class="admonition-title">A hierarchical namespace for buckets and packages</p>
+<p><strong>Zig&bull;EM</strong> favors a namespace hierarchy when labeling individual <strong>buckets</strong> and <strong>packages</strong>, in which the supplier has a globally-unique <em>prefix</em>&thinsp; [<code class="language-zigem highlight"><span class="s">&quot;org.&lt;domain&gt;&quot;</span></code>, <code class="language-zigem highlight"><span class="s">&quot;git.&lt;userid&gt;&quot;</span></code>, etc&thinsp;] used in these element names.</p>
+<p>Having said that, buckets and packages supplied by <strong>The EM Foundation</strong> itself [<code class="language-zigem highlight"><span class="s">&quot;git.em-foundation&quot;</span></code>] will often use a shorter (though still unique) moniker such as <code class="language-zigem highlight"><span class="s">&quot;em.&quot;</span></code> for their namespace prefix.</p>
+<p>Another <strong>Zig&bull;EM</strong> convention:&nbsp; names ascribed to <strong>buckets</strong> should themselves remain globally-unique &ndash; independent of their containing <strong>package(s)</strong>, which also should have unique names.</p>
+<p>While the <code class="language-zigem highlight"><span class="s">&quot;em.arch.arm&quot;</span></code> <strong>bucket</strong> lives in the <code class="language-zigem highlight"><span class="s">&quot;em.core&quot;</span></code> <strong>package</strong>, a third-party [<code class="language-zigem highlight"><span class="s">&quot;git.biosbob&quot;</span></code>] could also supply a package (labeled with their own prefix) that contains buckets with the same legacy <code class="language-zigem highlight"><span class="s">&quot;em.**&quot;</span></code> names.</p>
+</div>
+<p>As we'll see shortly, individual <strong>Zig&bull;EM</strong> source files use a special <code class="language-zigem highlight"><span class="nb">em.import</span></code> operator to reference other units found in the workspace.&thinsp; By design, each unit has a <em>canonical name</em>&thinsp; of the form <code><strong>bucket/Unit</strong></code>:&nbsp; <code class="language-zigem highlight"><span class="kt">em.examples.basic/BlinkerP</span></code>, <code class="language-zigem highlight"><span class="kt">ti.distro.cc23xx/BoardC</span></code>, etc.</p>
+<p>While <strong>buckets</strong> ultimately reside within <strong>packages</strong>, individual <code>.em.zig</code> source files should never reference the latter by name.&thinsp; <strong>Zig&bull;EM</strong> units in fact remain oblivious to any package(s) containing their own bucket as well as other <code><strong>bucket/Unit</strong></code> elements they may import.</p>
+<p>In essence, <strong>packages</strong> provide a delivery vehicle for <code><strong>bucket/Unit</strong></code> content.&thinsp; Each package has a manifest (<code>zigem-package.ini</code>) which in general names other packages upon which it depends.&thinsp; <strong>Zig&bull;EM</strong> topologically sorts the (acyclic) dependency relation amongst all packages in the workspace, yielding a search path used when resolving <code><strong>bucket/Unit</strong></code> references.</p>
+<div class="admonition zig">
+<p class="admonition-title">Terminology&thinsp;:: <strong>Zig&bull;EM</strong> = Zig + EM</p>
+<p>Mapping the original <a href="https://docs.openem.org/">EM language</a> into Zig can lead to <em>terminology clashes</em>, in which elements like <strong>package</strong> have distinct meanings in each language domain.&thinsp; EM, for instance, featured a <strong>bundle &gt; package &gt; unit</strong> hierarchy.&thinsp; For consistency, <strong>Zig&bull;EM</strong> will favor using native Zig nomenclature as much as possible.</p>
+<p>Over time, we'll directly leverage <a href="https://ziglang.org/download/0.11.0/release-notes.html#Package-Management">Zig Package Management</a> mechanisms for delivering buckets of <strong>Zig&bull;EM</strong> content.&thinsp; Said another way, expect each <strong>Zig&bull;EM package</strong> to carry their own <code>build.zig</code> and <code>build.zig.zon</code> files.&thinsp;  We'll also use Zig <strong>modules</strong> in <code>build.zig</code> to define <code><strong>bucket/Unit</strong></code> names exposed by the <strong>package</strong>.</p>
+<p>The <code>workspace/</code> folder depicted <a href="#fig2">earlier</a> currently serves as an embryonic prototype &ndash; delivered as part of the <code>zigem-dev</code> repository.&thinsp; When we reach <strong>Zig&bull;EM v25.1.0</strong>, however, users will create their own workspace(s) populated with multiple <strong>packages</strong> from multiple suppliers &ndash; each bundling uniquely-labeled <code><strong>bucket/Unit</strong></code> content.</p>
+</div>
+<h2 id="source-code-constructs">Source code constructs</h2>
+<p><strong>Zig&bull;EM units</strong>, as noted earlier, reside in <code>.em.zig</code> source files and make use of a special <code class="language-zigem highlight"><span class="s">&quot;em&quot;</span></code> library.&thinsp; In all other respects, these files conform to the syntax and semantics of Zig.</p>
+<div class="admonition zig">
+<p class="admonition-title">For Zig-lings and Zig-gurus alike....</p>
+<p>As you explore the dozens of <code>.em.zig</code> files found in the workspace, we recognize that your knowledge of Zig can vary considerably.&thinsp; We'll do our best to literally and figuratively <code class="language-zigem"><span class="nb">highlight</span></code> <strong>Zig&bull;EM</strong>'s unique constructs.</p>
+<p>For those seeing the Zig language for the first time, we strongly recommend <a href="https://www.openmymind.net/learning_zig/">Learning Zig</a> by Karl Sequin.&thinsp; For those coming from the embedded space with a background in C, you'll find some further motivation behind Zig in this <a href="https://avestura.dev/blog/problems-of-c-and-how-zig-addresses-them">@avestura</a> blog post as well as this <a href="https://www.youtube.com/watch?v=kxT8-C1vmd4">Zig in 100 Seconds</a> video.</p>
+<p>And for the Zig gurus:&nbsp; we always welcome your insightful comments at <a href="https://ziggit.dev/t/introducing-zig-em/5794">ziggit.dev</a> on how to best leverage the underlying language in implementing the core concepts and constructs of the <strong>Zig&bull;EM</strong> framework.</p>
+</div>
+<p>To begin, let's focus on the <code class="language-zigem highlight"><span class="kt">em.examples.basic/BlinkerP</span></code> program which illustrates some rudimentary constructs commonly found in a <strong>Zig&bull;EM unit</strong>:</p>
+<div class="language-zigem highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">em.examples.basic/BlinkerP.em.zig</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="nb">em</span><span class="x"> = </span><span class="nf">@import</span><span class="x">(</span><span class="s">&quot;../../zigem/em.zig&quot;</span><span class="x">);</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="nb">em__U</span><span class="x"> = </span><span class="nb">em.module</span><span class="x">(</span><span class="nf">@This</span><span class="x">(), .{});</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="kt">AppLed</span><span class="x"> = </span><span class="nb">em.import</span><span class="x">.</span><span class="kt">@&quot;em__distro/BoardC&quot;</span><span class="x">.</span><span class="kt">AppLed</span><span class="x">;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="kt">Common</span><span class="x"> = </span><span class="nb">em.import</span><span class="x">.</span><span class="kt">@&quot;em.mcu/Common&quot;</span><span class="x">;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="nt">pub const EM__TARG</span><span class="x"> = </span><span class="kr">struct</span><span class="x"> {</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="x">    </span><span class="kr">pub</span><span class="x"> </span><span class="kr">fn</span><span class="x"> </span><span class="nb">em__run</span><span class="x">() </span><span class="kt">void</span><span class="x"> {</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="x">        </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">on</span><span class="x">();</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="x">        </span><span class="k">for</span><span class="x"> (0..10) |</span><span class="n">_</span><span class="x">| {</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="x">            </span><span class="kt">Common</span><span class="x">.</span><span class="kt">BusyWait</span><span class="x">.</span><span class="nf">wait</span><span class="x">(500_000);</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="x">            </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">toggle</span><span class="x">();</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="x">        }</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="x">        </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">off</span><span class="x">();</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="x">    }</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="x">};</span>
+</span></code></pre></div></td></tr></table></div>
+<p>Even with no prior knowledge of the Zig language, the behavior of the "main" function between lines <span class="em-lineref"><a href="#__codelineno-0-8">8</a></span> and <span class="em-lineref"><a href="#__codelineno-0-15">15</a></span> should seem obvious &ndash; toggling <code class="language-zigem highlight"><span class="kt">AppLed</span></code> ten times every half-second.</p>
+<p>Standing back, the first two lines of this file serve as boilerplate which you'll find in <em>every</em>&thinsp; <strong>Zig&bull;EM unit:</strong>&nbsp; line <span class="em-lineref"><a href="#__codelineno-0-1">1</a></span> imports our special <code class="language-zigem highlight"><span class="s">&quot;em&quot;</span></code> library, while line <span class="em-lineref"><a href="#__codelineno-0-2">2</a></span> declares this unit's role as an <code class="language-zigem highlight"><span class="nb">em.module</span></code> and binds a corresponding object to the <code class="language-zigem highlight"><span class="nb">em__U</span></code> framework constant.</p>
+<div class="admonition em">
+<p class="admonition-title">language keywords versus framework operators</p>
+<p>The <a href="https://docs.openem.org/intro/">EM language</a> introduced the keywords <code class="language-zigem highlight"><span class="k">module</span></code>, <code class="language-zigem highlight"><span class="k">interface</span></code>, <code class="language-zigem highlight"><span class="k">composite</span></code>, and <code class="language-zigem highlight"><span class="k">template</span></code> to declare the role played by a specific unit;&thinsp; the <strong>Zig&bull;EM</strong> framework uses its operators <code class="language-zigem highlight"><span class="nb">em.module</span></code>, <code class="language-zigem highlight"><span class="nb">em.interface</span></code>, etc. for a similar purpose.&thinsp;  While <strong>Zig&bull;EM modules</strong> predominate, you will see other sorts of units in due course.</p>
+</div>
+<p class="annotate">Lines <span class="em-lineref"><a href="#__codelineno-0-4">4</a></span>&ndash;<span class="em-lineref"><a href="#__codelineno-0-5">5</a></span> use the framework's <code class="language-zigem highlight"><span class="nb">em.import</span></code> operator to access <code class="language-zigem highlight"><span class="kt">em.mcu/Common</span></code>, as well as the <code class="language-zigem highlight"><span class="kt">BoardC</span></code> (<strong>composite</strong>) unit located in a <em>logical</em>&thinsp; bucket named <code class="language-zigem highlight"><span class="kt">em__distro</span></code>.(1) The <code class="language-zigem highlight"><span class="kt">BoardC</span></code> <strong>composite</strong> in turn aggregates a large number of <strong>modules</strong> featuring hardware-specific implementations [<code class="language-zigem highlight"><span class="kt">AppLed</span></code>] of hardware-independent <strong>interfaces</strong> [<code class="language-zigem highlight"><span class="kt">em.hal/AppLedI</span></code>]&thinsp;.</p>
+<ol>
+<li>currently bound to <code class="language-zigem highlight"><span class="kt">ti.distro.cc23xx</span></code> within our workspace's <code>zigem.ini</code> configuration file</li>
+</ol>
+<p>Finally, the <code class="language-zigem highlight"><span class="nt">EM_TARG</span></code> structure defined at line <span class="em-lineref"><a href="#__codelineno-0-7">7</a></span> introduces a new <em>lexical scope</em> containing other Zig declarations (constants, types, variables, functions).&thinsp; We'll explain the role of this special <code class="language-zigem highlight"><span class="kr">struct</span></code> once we examine the lengthier <code class="language-zigem highlight"><span class="kt">em.examples.basic/FiberP</span></code> program:</p>
+<p><div class="language-zigem highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">em.examples.basic/FiberP.em.zig</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span>
+<span class="normal"><a href="#__codelineno-1-16">16</a></span>
+<span class="normal"><a href="#__codelineno-1-17">17</a></span>
+<span class="normal"><a href="#__codelineno-1-18">18</a></span>
+<span class="normal"><a href="#__codelineno-1-19">19</a></span>
+<span class="normal"><a href="#__codelineno-1-20">20</a></span>
+<span class="normal"><a href="#__codelineno-1-21">21</a></span>
+<span class="normal"><a href="#__codelineno-1-22">22</a></span>
+<span class="normal"><a href="#__codelineno-1-23">23</a></span>
+<span class="normal"><a href="#__codelineno-1-24">24</a></span>
+<span class="normal"><a href="#__codelineno-1-25">25</a></span>
+<span class="normal"><a href="#__codelineno-1-26">26</a></span>
+<span class="normal"><a href="#__codelineno-1-27">27</a></span>
+<span class="normal"><a href="#__codelineno-1-28">28</a></span>
+<span class="normal"><a href="#__codelineno-1-29">29</a></span>
+<span class="normal"><a href="#__codelineno-1-30">30</a></span>
+<span class="normal"><a href="#__codelineno-1-31">31</a></span>
+<span class="normal"><a href="#__codelineno-1-32">32</a></span>
+<span class="normal"><a href="#__codelineno-1-33">33</a></span>
+<span class="normal"><a href="#__codelineno-1-34">34</a></span>
+<span class="normal"><a href="#__codelineno-1-35">35</a></span>
+<span class="normal"><a href="#__codelineno-1-36">36</a></span>
+<span class="normal"><a href="#__codelineno-1-37">37</a></span>
+<span class="normal"><a href="#__codelineno-1-38">38</a></span>
+<span class="normal"><a href="#__codelineno-1-39">39</a></span>
+<span class="normal"><a href="#__codelineno-1-40">40</a></span>
+<span class="normal"><a href="#__codelineno-1-41">41</a></span>
+<span class="normal"><a href="#__codelineno-1-42">42</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="nb">em</span><span class="x"> = </span><span class="nf">@import</span><span class="x">(</span><span class="s">&quot;../../zigem/em.zig&quot;</span><span class="x">);</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="nb">em__U</span><span class="x"> = </span><span class="nb">em.module</span><span class="x">(</span><span class="nf">@This</span><span class="x">(), .{});</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="nb">em__C</span><span class="x"> = </span><span class="nb">em__U.config</span><span class="x">(</span><span class="n">EM__CONFIG</span><span class="x">);</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="nt">pub const EM__CONFIG</span><span class="x"> = </span><span class="kr">struct</span><span class="x"> {</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="x">    </span><span class="n">blinkF</span><span class="x">: </span><span class="nb">em.Param</span><span class="x">(</span><span class="kt">FiberMgr</span><span class="x">.</span><span class="kt">Obj</span><span class="x">),</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="x">};</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="kt">AppLed</span><span class="x"> = </span><span class="nb">em.import</span><span class="x">.</span><span class="kt">@&quot;em__distro/BoardC&quot;</span><span class="x">.</span><span class="kt">AppLed</span><span class="x">;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="kt">Common</span><span class="x"> = </span><span class="nb">em.import</span><span class="x">.</span><span class="kt">@&quot;em.mcu/Common&quot;</span><span class="x">;</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="kr">pub</span><span class="x"> </span><span class="kr">const</span><span class="x"> </span><span class="kt">FiberMgr</span><span class="x"> = </span><span class="nb">em.import</span><span class="x">.</span><span class="kt">@&quot;em.utils/FiberMgr&quot;</span><span class="x">;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="nt">pub const EM__META</span><span class="x"> = </span><span class="kr">struct</span><span class="x"> {</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="x">    </span><span class="c1">//</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="x">    </span><span class="kr">pub</span><span class="x"> </span><span class="kr">fn</span><span class="x"> </span><span class="nb">em__constructH</span><span class="x">() </span><span class="kt">void</span><span class="x"> {</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="x">        </span><span class="kr">const</span><span class="x"> </span><span class="n">blinkF</span><span class="x"> = </span><span class="kt">FiberMgr</span><span class="x">.</span><span class="nf">createH</span><span class="x">(</span><span class="nb">em__U.fxn</span><span class="x">(</span><span class="s">&quot;blinkFB&quot;</span><span class="x">, </span><span class="kt">FiberMgr</span><span class="x">.</span><span class="kt">BodyArg</span><span class="x">));</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="x">        </span><span class="nb">em__C</span><span class="x">.</span><span class="n">blinkF</span><span class="x">.</span><span class="nf">set</span><span class="x">(</span><span class="n">blinkF</span><span class="x">);</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="x">    }</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a><span class="x">};</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a><span class="nt">pub const EM__TARG</span><span class="x"> = </span><span class="kr">struct</span><span class="x"> {</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a><span class="x">    </span><span class="c1">//</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23"></a><span class="x">    </span><span class="kr">const</span><span class="x"> </span><span class="n">blinkF</span><span class="x"> = </span><span class="nb">em__C</span><span class="x">.</span><span class="n">blinkF</span><span class="x">;</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25"></a><span class="x">    </span><span class="kr">pub</span><span class="x"> </span><span class="kr">fn</span><span class="x"> </span><span class="nb">em__run</span><span class="x">() </span><span class="kt">void</span><span class="x"> {</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a><span class="x">        </span><span class="n">blinkF</span><span class="x">.</span><span class="nf">post</span><span class="x">();</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27"></a><span class="x">        </span><span class="n">FiberMgr</span><span class="x">.</span><span class="nf">run</span><span class="x">();</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28"></a><span class="x">    }</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29"></a>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30"></a><span class="x">    </span><span class="kr">var</span><span class="x"> </span><span class="n">count</span><span class="x">: </span><span class="kt">u8</span><span class="x"> = 5;</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31"></a>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32"></a><span class="x">    </span><span class="kr">pub</span><span class="x"> </span><span class="kr">fn</span><span class="x"> </span><span class="nf">blinkFB</span><span class="x">(</span><span class="n">_</span><span class="x">: </span><span class="kt">FiberMgr</span><span class="x">.</span><span class="kt">BodyArg</span><span class="x">) </span><span class="kt">void</span><span class="x"> {</span>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33"></a><span class="x">        </span><span class="nx">em.@&quot;%%[d]&quot;</span><span class="x">();</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34"></a><span class="x">        </span><span class="n">count</span><span class="x"> -= 1;</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35"></a><span class="x">        </span><span class="k">if</span><span class="x"> (</span><span class="n">count</span><span class="x"> == 0) </span><span class="nx">em.halt</span><span class="x">();</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36"></a><span class="x">        </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">on</span><span class="x">();</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37"></a><span class="x">        </span><span class="kt">Common</span><span class="x">.</span><span class="kt">BusyWait</span><span class="x">.</span><span class="nf">wait</span><span class="x">(100_000);</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38"></a><span class="x">        </span><span class="kt">AppLed</span><span class="x">.</span><span class="nf">off</span><span class="x">();</span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39"></a><span class="x">        </span><span class="kt">Common</span><span class="x">.</span><span class="kt">BusyWait</span><span class="x">.</span><span class="nf">wait</span><span class="x">(100_000);</span>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40"></a><span class="x">        </span><span class="n">blinkF</span><span class="x">.</span><span class="nf">post</span><span class="x">();</span>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41"></a><span class="x">    }</span>
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42"></a><span class="x">};</span>
+</span></code></pre></div></td></tr></table></div>
+This sample program illustrates basic use of <code class="language-zigem highlight"><span class="kt">em.utils/FiberMgr</span></code> &ndash; a module delivered within the <code class="language-zigem highlight"><span class="kt">em.core</span></code> package, and which manages lightweight threads of type <code class="language-zigem highlight"><span class="kt">FiberMgr.Obj</span></code> using a <strong>factory</strong> design pattern applied often within <strong>Zig&bull;EM</strong>.</p>
+<p>Looking first at the features declared and defined within the <code class="language-zigem highlight"><span class="nt">EM__TARG</span></code> scope, we find:</p>
+<p><span class="em-small">
+<strong>line</strong> <span class="em-lineref"><a href="#__codelineno-1-23">23</a></span> &mdash; the constant <code class="language-zigem highlight"><span class="n">blinkF</span></code>, which references a <code class="language-zigem highlight"><span class="kt">Fiber.Obj</span></code> created earlier in the program<br>
+<strong>line</strong> <span class="em-lineref"><a href="#__codelineno-1-25">25</a></span> &mdash; the framework function <code class="language-zigem highlight"><span class="nb">em__run</span></code>, which serves as this example's runtime entry-point<br>
+<strong>line</strong> <span class="em-lineref"><a href="#__codelineno-1-30">30</a></span> &mdash; the variable <code class="language-zigem highlight"><span class="n">count</span></code>, used to track the number of times the program must blink <code class="language-zigem highlight"><span class="kt">AppLed</span></code><br>
+<strong>line</strong> <span class="em-lineref"><a href="#__codelineno-1-32">32</a></span> &mdash; the function <code class="language-zigem highlight"><span class="nf">blinkFB</span></code>, which represents the code executed upon activating the <code class="language-zigem highlight"><span class="n">blinkF</span></code> fiber<br>
+</span></p>
+<p>We'll fill in some more details after we examine the top-half of <code class="language-zigem highlight"><span class="kt">em.examples.basic/FiberP</span></code>.</p>
+<p>Complementing <code class="language-zigem highlight"><span class="nt">EM__TARG</span></code>, the <code class="language-zigem highlight"><span class="kt">FiberP</span></code> program also declares <code class="language-zigem highlight"><span class="nt">EM__META</span></code> beginning at line <span class="em-lineref"><a href="#__codelineno-1-13">13</a></span>.&thinsp; Here too, this special <code class="language-zigem highlight"><span class="kr">struct</span></code> can contain declarations and definitions within its scope:</p>
+<p><span class="em-small">
+<strong>line</strong> <span class="em-lineref"><a href="#__codelineno-1-15">15</a></span> &mdash; the framework function <code class="language-zigem highlight"><span class="nb">em__constructH</span></code>, which creates the <code class="language-zigem highlight"><span class="n">blinkF</span></code> fiber used later in the program<br>
+<strong>line</strong> <span class="em-lineref"><a href="#__codelineno-1-16">16</a></span> &mdash; <code class="language-zigem highlight"><span class="kt">FiberMgr</span></code>.<code class="language-zigem highlight"><span class="nf">createH</span></code> also binds our (runtime) <code class="language-zigem highlight"><span class="nf">blinkFB</span></code> function to the newly-created <code class="language-zigem highlight"><span class="n">blinkF</span></code> fiber<br />
+</span></p>
+<p>To complete the picture, line <span class="em-lineref"><a href="#__codelineno-1-5">5</a></span> of the <code class="language-zigem highlight"><span class="kt">FiberP</span></code> program defines a special <code class="language-zigem highlight"><span class="nt">EM__CONFIG</span></code> structure &ndash; an instance of which the program assigns to the <code class="language-zigem highlight"><span class="nb">EM__C</span></code> framework constant using more boilerplate code back at line <span class="em-lineref"><a href="#__codelineno-1-3">3</a></span>.</p>
+<div class="admonition info">
+<p class="admonition-title">VS Code snippets</p>
+<p>The <code>vscode.zigem</code> extension includes boilerplate code which you can inject into new <strong>units</strong> within your workspace.&thinsp; Invoke <strong>Command Palette &gt; Snippets: Fill File with Snippet</strong> on an empty <code>.em.zig</code> file to experiment.</p>
+</div>
+<p>To appreciate the pivotal role played by the <code class="language-zigem highlight"><span class="nb">EM__C</span></code><code>.</code><code class="language-zigem highlight"><span class="n">blinkF</span></code> field throughout our <code class="language-zigem highlight"><span class="kt">FiberP</span></code> example, we'll need to examine how the <strong>Zig&bull;EM</strong> framework transforms the <code>FiberP.em.zig</code> source file into an executable program image.</p>
+<h2 id="program-compilation">Program compilation</h2>
+<p>Let's now compile the <code class="language-zigem highlight"><span class="kt">em.examples.basic/FiberP</span></code> program, using the framework's <code class="language-em highlight"><span class="si">zigem</span></code> command first seen <a href="/post-002/#zigem-command">here</a>:</p>
+<div class="language-text highlight">
+<p><pre><code><span class="em-color-blue">[zigem-dev/workspace]</span>
+$ <span class="em-color-orange">zigem compile -f em.core/em.examples.basic/FiberP.em.zig</span>
+compiling META ...
+    board: LP_EM_CC2340R5
+    setup: ti.cc23xx://default
+compiling TARG ...
+    image sha: 93aad9c9
+    image size: text (1560) + const (0) + data (40) + bss (4)
+done in 6.96 seconds</code></pre></p>
+</div>
+<p>You'll immediately notice that <code>zigem</code> compiles the program <u><i>twice</i></u>&nbsp;:&nbsp; once for the <strong>META</strong> domain, and then again for the <strong>TARG</strong> domain.</p>
+<div class="em-ol">
+<p>The <strong>META</strong> compilation stage processes all source code from lines <span class="em-lineref"><a href="#__codelineno-1-1">1</a></span>&ndash;<span class="em-lineref"><a href="#__codelineno-1-19">19</a></span>, effectively merging the <code class="language-zigem highlight"><span class="nt">EM__META</span></code> declarations into the top-level file scope.&thinsp;</p>
+<p>The <strong>TARG</strong> compilation stage follows suit, combining common declarations [<span class="em-lineref"><a href="#__codelineno-1-1">1</a></span>&ndash;<span class="em-lineref"><a href="#__codelineno-1-11">11</a></span>] with <code class="language-zigem highlight"><span class="nt">EM__TARG</span></code> declarations [<span class="em-lineref"><a href="#__codelineno-1-21">21</a></span>&ndash;<span class="em-lineref"><a href="#__codelineno-1-42">42</a></span>] as input for the underlying Zig compiler.</p>
+</div>
+<p>While diving into the implementation details of the <code class="language-em highlight"><span class="si">zigem</span></code> command lies well beyond the scope of this introductory article, we'll give you a quick peek into the <strong>Zig&bull;EM</strong> "basement" where most of the magic occurs.</p>
+<div class="admonition zig">
+<p class="admonition-title">For those in the know, just follow the trail heading out from <code>build.zig</code> and <code>src/main.zig</code>&thinsp;....</p>
+</div>
+<p>To start, invoke the <code class="language-em highlight"><span class="si">zigem clean</span></code> command followed by <code class="language-em highlight"><span class="si">zigem refresh</span></code>.&thinsp; Your workspace should now reveal two additional elements generated by the framework:</p>
+<figure id="fig4">
+<p><a class="glightbox" href="/assets/fig-003-4.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Image info" src="/assets/fig-003-4.png" /></a></p>
+<figcaption>Generated Elements 
+</figcaption>
+</figure>
+<p>The <code>.zigem-main.zig</code> file provides entry points for the <strong>META</strong> and <strong>TARG</strong> compilatiion stages, which at this point respectively reference <em>empty</em> <code>zigem/meta.zig</code> and <code>zigem/targ.zig</code> files.</p>
+<p>You'll find the "interesting" code generated at this stage in files like <code>imports.zig</code>, which reflects an upfront discovery of all <strong>package &gt; bucket &gt; unit</strong> elements in the workspace.</p>
+<div class="admonition zig">
+<p class="admonition-title">You'll also find a <code>makefile</code>, whose recipes will eventually migrate into (generated) <code>build.zig</code> files.</p>
+</div>
+<p>By invoking <code class="language-em highlight"><span class="si">zigem compile</span></code> with its <code class="language-em highlight"><span class="si">-m</span></code> [<code class="language-em highlight"><span class="si">--meta</span></code>] option, we can better appreciate the role played by this initial compilation stage.</p>
+<div class="language-text highlight">
+<p><pre><code><span class="em-color-blue">[zigem-dev/workspace]</span>
+$ <span class="em-color-orange">zigem compile -f em.core/em.examples.basic/FiberP.em.zig -m</span>
+compiling META ...
+    board: LP_EM_CC2340R5
+    setup: ti.cc23xx://default
+done in 4.73 seconds</code></pre></p>
+</div>
+<p>Before compilation begins, the framework populates <code>zigem/meta.zig</code> with code that will execute our new <strong>META</strong> program &ndash; rooted at the <code class="language-zigem highlight"><span class="kt">em.examples.basic/FiberP</span></code> unit and incorporating all other units (recursively) reached through <code class="language-zigem highlight"><span class="nb">em.import</span></code>.</p>
+<p>Next, the framework invokes the Zig compiler using the <code class="language-em highlight"><span class="si">zig build-exe</span></code> command and then runs the <code>zigem/out/meta-main</code> executable image output by the compiler.&thinsp; The <code class="language-em highlight"><span class="si">meta</span></code> goal inside <code>zigem/makefile</code> currently codifies the steps used in this process.</p>
+<div class="admonition bulb">
+<p class="admonition-title">If not obvious, <strong>META</strong> programs run on your <u>host</u> PC &mdash; and not on resource-constrained target HW&thinsp;!!!</p>
+</div>
+<p>Functions like <code class="language-zigem highlight"><span class="nb">em__constructH</span></code> [&thinsp;defined in the <code class="language-zigem highlight"><span class="kt">FiberP</span></code> <code class="language-zigem highlight"><span class="nt">EM__META</span></code> scope at <span class="em-lineref"><a href="#__codelineno-1-13">13</a></span>] enjoy execution in an environment with virtually unlimited memory and processing resources, as well as access to the host's file system or even the internet if necessary.</p>
+<p>In general, <strong>META</strong> programs declare <strong>config parameters</strong> as fields within per-unit <code class="language-zigem highlight"><span class="nt">EM__CONFIG</span></code> structures [<span class="em-lineref"><a href="#__codelineno-1-5">5</a></span>] and modify their values [<span class="em-lineref"><a href="#__codelineno-1-17">17</a></span>] via local definitions of <code class="language-zigem highlight"><span class="nb">em__C</span></code>.&thinsp; Ultimately, <strong>Zig&bull;EM</strong> writes the final state of all program config parameters into an updated <code>zigem/targ.zig</code> file.</p>
+<p>In general, <strong>META</strong> programs declare <strong>config parameters</strong> as fields within per-unit <code class="language-zigem highlight"><span class="nt">EM__CONFIG</span></code> structures [<span class="em-lineref"><a href="#__codelineno-1-5">5</a></span>] and modify their values [<span class="em-lineref"><a href="#__codelineno-1-17">17</a></span>] via local definitions of <code class="language-zigem highlight"><span class="nb">em__C</span></code>.&thinsp; Ultimately, <strong>Zig&bull;EM</strong> updates its <code>zigem/targ.zig</code> file to reflect the final state of all program config parameters.</p>
+<div class="admonition info">
+<p class="admonition-title">A <strong>config parameter</strong> acts like a <code class="language-zigem highlight"><span class="kr">var</span></code> in your <strong>META</strong> program, but like a <code class="language-zigem highlight"><span class="kr">const</span></code> in your <strong>TARG</strong> program.</p>
+</div>
+<p class="annotate">The downstream compilation of <code class="language-zigem highlight"><span class="kt">FiberP</span></code> for the <strong>TARG</strong> domain uses a public <code class="language-zigem highlight"><span class="nf">exec</span></code> function defined at the bottom of <code>zigem/targ.zig</code> as the runtime entry-point.&thinsp; After initializing the target hardware(1)<code class="language-zigem highlight"><span class="nf">exec</span></code> will call the <code class="language-zigem highlight"><span class="nb">em__run</span></code> function [<span class="em-lineref"><a href="#__codelineno-1-25">25</a></span>] defined in <code class="language-zigem highlight"><span class="kt">BlinkerP</span></code>.</p>
+<ol>
+<li>via special function like <code class="language-zigem highlight"><span class="nb">em__reset</span></code> and <code class="language-zigem highlight"><span class="nb">em__startup</span></code><br>defined in lower-level program units</li>
+</ol>
+<p>To summarize:&nbsp; We have a hosted upstream <strong>META</strong> program that outputs constant data consumed by a downstream (cross-compiled) <strong>TARG</strong> program.  This novel two-stage build flow ultimately yields <em>highly-optimized</em>&thinsp; executable images for resource-constrained MCU platforms:</p>
+<p>To summarize:</p>
+<div class="em-small">
+<p><span class="em-bull"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/></svg></span></span>&nbsp; a hosted upstream <strong>META</strong> program manipulates <strong>CONFIG</strong> parameters as variables<br>
+<span class="em-bull"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/></svg></span></span>&nbsp; a downstream <strong>TARG</strong> program consumes these (constant) parameters when cross-compiled<br>
+<span class="em-bull"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/></svg></span></span>&nbsp; a novel build flow which ultimately yields <em>highly-optimized</em>&thinsp; firmware  for resource-constrained MCUs</p>
+</div>
+<div class="language-text highlight">
+<p><pre><code><span class="em-color-blue">[zigem-dev/workspace]</span>
+$ <span class="em-color-orange">zigem compile -f em.core/em.examples.basic/FiberP.em.zig</span>
+compiling META ...
+    board: LP_EM_CC2340R5
+    setup: ti.cc23xx://default
+compiling TARG ...
+    image sha: 93aad9c9
+    image size: text (1560) + const (0) + data (40) + bss (4)
+done in 6.96 seconds</code></pre></p>
+</div>
+<h2 id="further-exploration">Further exploration</h2>
+<p>Depending upon your background and interests, we present you with several different paths for increasing your understanding of the <strong>Zig&bull;EM</strong> framework:</p>
+<div class="admonition tip">
+<p class="admonition-title">More sample programs...</p>
+<p>&thinsp;<span class="em-bull"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/></svg></span></span> &nbsp; visit other sample programs in the <code class="language-zigem highlight"><span class="kt">em.examples.basic</span></code> bucket<br>
+&thinsp;<span class="em-bull"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/></svg></span></span> &nbsp; load these programs onto target hardware, following <a href="/post-002/#exploring-zigem">these</a> instructions</p>
+</div>
+<div class="admonition bulb">
+<p class="admonition-title">Go deep</p>
+<p>&thinsp;<span class="em-bull"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/></svg></span></span> &nbsp; familiarize yourself with the other <code class="language-zigem highlight"><span class="kt">em.&ast;&ast;</span></code> buckets, as well as the <code class="language-zigem highlight"><span class="kt">ti.&ast;&ast;</span></code> content<br>
+&thinsp;<span class="em-bull"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/></svg></span></span> &nbsp; starting with <code class="language-zigem highlight"><span class="kt">AppLed</span></code>, plumb down through all units contributing to its implementation </p>
+</div>
+<div class="admonition zig">
+<p class="admonition-title">Behind the curtain...</p>
+<p>&thinsp;<span class="em-bull"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/></svg></span></span> &nbsp; get dirty inside of <code>em.zig</code> and <code>meta-main.zig</code>, found in the <code class="language-zigem highlight"><span class="kt">em.lang</span></code> bucket<br>
+&thinsp;<span class="em-bull"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Z"/></svg></span></span> &nbsp; offer up guidance on how to better leverage the Zig language and its build system</p>
+</div>
+<p><span class="em-float-right">Happy coding&thinsp;!!! &ensp; <img alt="🌝" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f31d.svg" title=":full_moon_with_face:" />&nbsp;&nbsp;&nbsp;<img alt="💻" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f4bb.svg" title=":computer:" /></span></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 &ndash; The EM Foundation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/company/the-em-foundation/about/?viewAsMember=true" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/em-foundation" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.top"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+        <script src="../extra.js"></script>
+      
+        <script src="../js/open_in_new_tab.js"></script>
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>
